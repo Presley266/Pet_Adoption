@@ -81,7 +81,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/auth/**", "/api/pets", "/api/pets/**", "/api/categories").permitAll()
+                .antMatchers("/api/auth/**", "/api/pets/**", "/api/adoptions/**").permitAll()
                 .anyRequest().permitAll()  // 简化：所有接口都放行，用Controller里手动验证token
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

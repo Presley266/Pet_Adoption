@@ -15,13 +15,12 @@ export const removeFavorite = (petId) => request.delete(`/favorites/${petId}`)
 export const checkFavorite = (petId) => request.get(`/favorites/check/${petId}`)
 export const getMyFavorites = (params) => request.get('/favorites/my', { params })
 
-// ========== 个人中心相关 ==========
+// ========== 个人中心 ==========
 export const getUserProfile = () => request.get('/user/profile')
 export const updateUserProfile = (data) => request.put('/user/profile', data)
-// ========== 申请相关 ==========
-export const submitApplication = (data) => request.post('/user/applications', data)
-export const getUserApplications = (params) => request.get('/user/applications', { params })
-export const cancelApplication = (id) => request.put(`/user/applications/${id}/cancel`)
+// ========== 领养申请 ==========
+export const submitAdoption = (data) => request.post('/adoptions/apply', data)
+export const getMyAdoptions = () => request.get('/adoptions/my')
 
 // ========== 管理员相关 ==========
 export const getStatistics = () => request.get('/admin/dashboard/statistics')

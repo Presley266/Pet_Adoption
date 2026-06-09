@@ -29,9 +29,9 @@
         </div>
         <div class="actions">
           <el-button
-              v-if="pet.status === 'AVAILABLE' && userStore.isLoggedIn"
-              type="primary"
-              @click="goToApply">
+            v-if="pet.status === 'AVAILABLE' && userStore.isLoggedIn"
+            type="primary"
+            @click="$router.push(`/applications/new/${pet.id}`)">
             申请领养
           </el-button>
           <el-button v-else-if="pet.status !== 'AVAILABLE'" type="info" disabled>已领养</el-button>

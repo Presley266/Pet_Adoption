@@ -20,6 +20,9 @@
                 <el-dropdown-item @click="$router.push('/user/favorites')">
                   <el-icon><Star /></el-icon> 我的收藏
                 </el-dropdown-item>
+                <el-dropdown-item @click="$router.push('/user/applications')">
+                  <el-icon><Document /></el-icon> 我的申请
+                </el-dropdown-item>
                 <el-dropdown-item divided @click="handleLogout">
                   <el-icon><SwitchButton /></el-icon> 退出登录
                 </el-dropdown-item>
@@ -42,6 +45,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '../stores/user'
 import { ArrowDown, User, Star, SwitchButton } from '@element-plus/icons-vue'
+import { Document } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const userStore = useUserStore()

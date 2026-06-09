@@ -11,6 +11,9 @@ const routes = [
   { path: '/user/profile', name: 'UserProfile', component: () => import('../views/UserProfileView.vue'), meta: { requiresAuth: true } },
   // 我的收藏
   { path: '/user/favorites', name: 'UserFavorites', component: () => import('../views/UserFavoritesView.vue'), meta: { requiresAuth: true } },
+  // 领养申请
+  { path: '/applications/new/:petId', name: 'ApplicationForm', component: () => import('../views/ApplicationFormView.vue'), meta: { requiresAuth: true } },
+  { path: '/user/applications', name: 'UserApplications', component: () => import('../views/UserApplicationsView.vue'), meta: { requiresAuth: true } },
 ]
 
 const router = createRouter({
