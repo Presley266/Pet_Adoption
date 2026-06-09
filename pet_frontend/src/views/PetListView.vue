@@ -28,11 +28,8 @@
           <p class="desc">{{ pet.description?.slice(0, 50) }}...</p>
           <div class="stats">
             <span class="favorite-btn" @click.stop="toggleFavorite(pet)">
-              <span v-if="favoriteLoading[pet.id]">⏳</span>
-              <span v-else>
-                <span class="heart" :class="{ liked: pet.isFavorited }">♥</span>
-                {{ pet.favoriteCount || 0 }}
-              </span>
+              <span class="heart" :class="{ liked: pet.isFavorited }">♥</span>
+              {{ pet.favoriteCount || 0 }}
             </span>
             <span class="status" :class="pet.status === 'AVAILABLE' ? 'available' : 'adopted'">
               {{ pet.status === 'AVAILABLE' ? '可领养' : '已领养' }}

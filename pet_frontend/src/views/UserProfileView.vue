@@ -20,10 +20,6 @@
           <el-input v-model="form.phone" placeholder="请输入手机号" />
         </el-form-item>
 
-        <el-form-item label="地址">
-          <el-input v-model="form.address" placeholder="请输入地址" />
-        </el-form-item>
-
         <el-form-item>
           <el-button type="primary" @click="handleUpdate" :loading="saving">保存修改</el-button>
         </el-form-item>
@@ -44,7 +40,6 @@ const form = reactive({
   username: '',
   email: '',
   phone: '',
-  address: ''
 })
 
 const rules = {
@@ -59,7 +54,6 @@ const loadProfile = async () => {
       form.username = res.user.username || ''
       form.email = res.user.email || ''
       form.phone = res.user.phone || ''
-      form.address = res.user.address || ''
     }
   } catch (error) {
     console.error('加载个人信息失败', error)
@@ -75,7 +69,6 @@ const handleUpdate = async () => {
     await updateUserProfile({
       email: form.email,
       phone: form.phone,
-      address: form.address
     })
     ElMessage.success('更新成功')
   } catch (error) {
