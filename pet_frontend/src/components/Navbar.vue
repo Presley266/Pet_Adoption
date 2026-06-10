@@ -1,7 +1,7 @@
 <template>
-  <nav class="navbar" :class="{ scrolled: isScrolled }">
+  <nav class="navbar" :class="{ scrolled: isScrolled && !isAdminPage, 'admin-nav': isAdminPage }">
     <div class="nav-container">
-      <div class="logo" @click="$router.push('/')">
+      <div class="logo" @click="goHome">
         PetHome
       </div>
       <div class="nav-links">
@@ -14,6 +14,9 @@
             </span>
             <template #dropdown>
               <el-dropdown-menu>
+                <el-dropdown-item v-if="userStore.isAdmin" @click="goToAdmin">
+                  <el-icon><Setting /></el-icon> 后台管理
+                </el-dropdown-item>
                 <el-dropdown-item @click="$router.push('/user/profile')">
                   <el-icon><User /></el-icon> 个人资料
                 </el-dropdown-item>
@@ -40,26 +43,49 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '../stores/user'
-import { ArrowDown, User, Star, SwitchButton } from '@element-plus/icons-vue'
-import { Document } from '@element-plus/icons-vue'
+import { ArrowDown, User, Star, SwitchButton, Document, Setting } from '@element-plus/icons-vue'
 
 const router = useRouter()
+const route = useRoute()
 const userStore = useUserStore()
 const isScrolled = ref(false)
 
+// 判断是否是后台页面
+const isAdminPage = computed(() => route.path.startsWith('/admin'))
+
+// 滚动监听
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50
 }
 
+// 退出登录
 const handleLogout = () => {
   userStore.logout()
   ElMessage.success('已退出登录')
   router.push('/')
 }
+
+// 跳转首页
+const goHome = () => {
+  router.push('/')
+}
+
+// 跳转后台
+const goToAdmin = () => {
+  router.push('/admin')
+}
+
+// 监听路由变化，如果是后台页面，确保导航栏样式正确
+watch(() => route.path, (newPath) => {
+  if (newPath.startsWith('/admin')) {
+    // 后台页面不需要滚动监听效果
+    isScrolled.value = false
+  }
+}, { immediate: true })
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
@@ -81,6 +107,7 @@ onUnmounted(() => {
   transition: all 0.3s ease;
 }
 
+/* 普通页面滚动后效果 */
 .navbar.scrolled {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
@@ -93,6 +120,37 @@ onUnmounted(() => {
 
 .navbar.scrolled .logo {
   color: #333;
+  -webkit-text-stroke: 1px #333;
+  text-stroke: 1px #333;
+}
+
+/* 后台页面专用样式 */
+.navbar.admin-nav {
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.navbar.admin-nav .logo {
+  color: #333;
+  -webkit-text-stroke: 1px #333;
+  text-stroke: 1px #333;
+}
+
+.navbar.admin-nav .nav-link {
+  color: #333;
+  text-shadow: none;
+}
+
+.navbar.admin-nav .nav-link:hover {
+  color: #ff8c5a;
+}
+
+.navbar.admin-nav .nav-link.active {
+  color: #ff8c5a;
+}
+
+.navbar.admin-nav .nav-link::after {
+  background: #ff8c5a;
 }
 
 .nav-container {
@@ -112,12 +170,7 @@ onUnmounted(() => {
   color: white;
   -webkit-text-stroke: 1px white;
   text-stroke: 1px white;
-}
-
-.navbar.scrolled .logo {
-  color: #333;
-  -webkit-text-stroke: 1px #333;
-  text-stroke: 1px #333;
+  transition: all 0.3s ease;
 }
 
 .nav-links {
@@ -144,7 +197,7 @@ onUnmounted(() => {
   left: 0;
   width: 0;
   height: 2px;
-  background: #ff8c5a;
+  background: white;
   transition: width 0.3s;
 }
 

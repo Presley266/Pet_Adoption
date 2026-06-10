@@ -14,6 +14,18 @@ const routes = [
   // 领养申请
   { path: '/applications/new/:petId', name: 'ApplicationForm', component: () => import('../views/ApplicationFormView.vue'), meta: { requiresAuth: true } },
   { path: '/user/applications', name: 'UserApplications', component: () => import('../views/UserApplicationsView.vue'), meta: { requiresAuth: true } },
+    //管理员
+  {
+    path: '/admin',
+    component: () => import('../views/AdminLayout.vue'),
+    meta: {requiresAuth: true, requiresAdmin: true},
+    children: [
+      {path: 'pets', component: () => import('../views/AdminPets.vue')},
+      {path: 'users', component: () => import('../views/AdminUsers.vue')},
+      {path: 'applications', component: () => import('../views/AdminApplications.vue')},
+      {path: '', redirect: '/admin/pets'}
+    ]
+  }
 ]
 
 const router = createRouter({

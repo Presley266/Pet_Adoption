@@ -21,7 +21,7 @@
         </div>
         <div class="info-row">
           <span class="label">收藏人数：</span>
-          <span>{{ pet.viewCount || 0 }} 人</span>
+          <span>{{ pet.favoriteCount || 0 }} 人</span>
         </div>
         <div class="description">
           <h3>宠物介绍</h3>
@@ -114,10 +114,7 @@ const toggleFavorite = async () => {
   }
 }
 
-const goToApply = () => {
-  // 暂时提示功能开发中
-  ElMessage.info('领养申请功能开发中，敬请期待')
-}
+
 
 onMounted(() => {
   loadPetDetail()

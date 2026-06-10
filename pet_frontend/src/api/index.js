@@ -19,8 +19,8 @@ export const getMyFavorites = (params) => request.get('/favorites/my', { params 
 export const getUserProfile = () => request.get('/user/profile')
 export const updateUserProfile = (data) => request.put('/user/profile', data)
 // ========== 领养申请 ==========
-export const submitAdoption = (data) => request.post('/adoptions/apply', data)
-export const getMyAdoptions = () => request.get('/adoptions/my')
+export const submitAdoption = (data) => request.post('/user/applications', data)
+export const getMyAdoptions = () => request.get('/user/applications')
 
 // ========== 管理员相关 ==========
 export const getStatistics = () => request.get('/admin/dashboard/statistics')
