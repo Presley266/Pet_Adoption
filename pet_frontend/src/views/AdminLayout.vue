@@ -1,7 +1,7 @@
 <template>
   <div class="admin-layout">
     <div class="admin-sidebar">
-      <div class="logo">🐾 管理后台</div>
+      <div class="logo">管理后台</div>
       <el-menu :default-active="activeMenu" router>
         <el-menu-item index="/admin/pets">
           <el-icon><Goods /></el-icon>

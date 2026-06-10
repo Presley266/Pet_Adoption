@@ -5,8 +5,7 @@
     <div class="pet-grid" v-loading="loading">
       <div v-for="fav in favorites" :key="fav.id" class="pet-card" @click="$router.push(`/pets/${fav.petId}`)">
         <div class="pet-image-wrapper">
-          <img :src="fav.pet?.imageUrl || 'https://picsum.photos/300/200'" class="pet-image">
-        </div>
+          <img :src="fav.pet?.imageUrl || '/images/default-pet.jpg'" class="pet-image">        </div>
         <div class="pet-info">
           <h3>{{ fav.pet?.name || '宠物' }}</h3>
           <p>{{ fav.pet?.breed || '未知品种' }} · {{ fav.pet?.age || 0 }}个月</p>

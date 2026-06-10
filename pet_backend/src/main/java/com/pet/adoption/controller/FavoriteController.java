@@ -1,15 +1,22 @@
 package com.pet.adoption.controller;
 
 import com.pet.adoption.entity.Favorite;
+import com.pet.adoption.entity.Pet;
 import com.pet.adoption.repository.FavoriteRepository;
 import com.pet.adoption.repository.PetRepository;
 import com.pet.adoption.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/favorites")
@@ -105,6 +112,7 @@ public class FavoriteController {
         return result;
     }
 
+    // 获取我的收藏列表
     @GetMapping("/my")
     public Map<String, Object> getMyFavorites(HttpServletRequest request,
                                               @RequestParam(defaultValue = "0") int page,
@@ -118,13 +126,31 @@ public class FavoriteController {
             return result;
         }
 
-        org.springframework.data.domain.Pageable pageable =
-                org.springframework.data.domain.PageRequest.of(page, size,
-                        org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "createTime"));
-        org.springframework.data.domain.Page<Favorite> favorites = favoriteRepository.findByUserId(userId, pageable);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createTime"));
+        Page<Favorite> favorites = favoriteRepository.findByUserId(userId, pageable);
+
+        // 手动填充宠物信息
+        List<Map<String, Object>> favoriteList = new ArrayList<>();
+        for (Favorite fav : favorites.getContent()) {
+            Pet pet = petRepository.findById(fav.getPetId()).orElse(null);
+            Map<String, Object> item = new HashMap<>();
+            item.put("id", fav.getId());
+            item.put("petId", fav.getPetId());
+            item.put("createTime", fav.getCreateTime());
+            if (pet != null) {
+                Map<String, Object> petInfo = new HashMap<>();
+                petInfo.put("name", pet.getName());
+                petInfo.put("breed", pet.getBreed());
+                petInfo.put("age", pet.getAge());
+                petInfo.put("imageUrl", pet.getImageUrl());
+                petInfo.put("status", pet.getStatus());
+                item.put("pet", petInfo);
+            }
+            favoriteList.add(item);
+        }
 
         result.put("success", true);
-        result.put("favorites", favorites.getContent());
+        result.put("favorites", favoriteList);
         result.put("total", favorites.getTotalElements());
         return result;
     }
